@@ -16,13 +16,13 @@ const Header = () => {
         <ModeToggle />
 
         {/* Pricing button */}
-        <Button variant="outline" asChild>
+        <Button variant="outline" className="hidden md:block" asChild>
           <Link href="/pricing">Pricing</Link>
         </Button>
 
         {/* Dashboard Button */}
         <SignedIn>
-          <Button variant="outline" asChild>
+          <Button className="hidden sm:block" variant="outline" asChild>
             <Link href="/dashboard">Dashboard</Link>
           </Button>
         </SignedIn>

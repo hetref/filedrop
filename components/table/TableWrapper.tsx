@@ -105,7 +105,7 @@ const TableWrapper = ({ skeletonFiles }: { skeletonFiles: FileType[] }) => {
 
   return (
     <div className="flex flex-col space-y-5 pb-10">
-      <div className="flex items-end justify-end flex-col">
+      <div className="flex items-start md:items-end justify-end flex-col">
         <p>
           <b>Total Files</b>: {initialFiles.length} files
         </p>

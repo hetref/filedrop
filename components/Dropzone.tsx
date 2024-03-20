@@ -15,6 +15,7 @@ import { useEffect, useState } from "react";
 import DropzoneComponent from "react-dropzone";
 import { useToast } from "./ui/use-toast";
 import { useAppStore } from "@/store/store";
+import { Skeleton } from "./ui/skeleton";
 
 const Dropzone = () => {
   const [loading, setLoading] = useState(false);
@@ -22,11 +23,6 @@ const Dropzone = () => {
   const { toast } = useToast();
 
   const totalSize = useAppStore((state) => state.totalSize);
-
-  console.log(totalSize);
-
-  totalSize && console.log("TotalSize", totalSize);
-
   const maxSize = 20971520;
 
   const onDrop = (acceptedFiles: File[]) => {
@@ -94,6 +90,15 @@ const Dropzone = () => {
     setLoading(false);
   };
 
+  if (totalSize === -1) {
+    return (
+      // <div className="h-[200px] bg-primary/50 text-secondary flex justify-center items-center mx-4 my-4 rounded animate-pulse text-2xl md:text-3xl mb-4">
+      //   Loading
+      // </div>
+      <Skeleton className="h-[200px] flex justify-center items-center mx-4 my-4 rounded text-2xl md:text-3xl mb-4" />
+    );
+  }
+
   return (
     <DropzoneComponent minSize={0} maxSize={maxSize} onDrop={onDrop}>
       {({
@@ -121,7 +126,9 @@ const Dropzone = () => {
               {isDragActive && !isDragReject && "Drop to upload this file!"}
               {isDragReject && "File type not accepted, sorry!"}
               {isFileTooLarge && (
-                <div className="text-danger mt-2">File is too large</div>
+                <div className="text-danger mt-2">
+                  File is too large, upgrade to pro!
+                </div>
               )}
             </div>
           </section>
