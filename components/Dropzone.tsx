@@ -27,12 +27,6 @@ const Dropzone = () => {
 
   totalSize && console.log("TotalSize", totalSize);
 
-  useEffect(() => {
-    // if (totalSize) {
-    console.log("TotalSize", totalSize);
-    // }
-  }, [totalSize]);
-
   const maxSize = 20971520;
 
   const onDrop = (acceptedFiles: File[]) => {

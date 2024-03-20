@@ -29,7 +29,6 @@ const TableWrapper = ({ skeletonFiles }: { skeletonFiles: FileType[] }) => {
   const setTotalSize = useAppStore((state) => state.setTotalSize);
 
   const [totalFileSize, setTotalFileSize] = useState<number>(0);
-  const [totalFiles, setTotalFiles] = useState<number>(0);
 
   const [selectedValues, isDeleting, setIsBulkDeletingOpen] = useAppStore(
     (state) => [
@@ -65,73 +64,11 @@ const TableWrapper = ({ skeletonFiles }: { skeletonFiles: FileType[] }) => {
     }
   };
 
-  // Get the total size in bytes of the files uploaded by the user
-  // initialFiles value:
-  // [
-  //     {
-  //         "id": "n2LwdmP53l2XaiAKUYjQ",
-  //         "filename": "Rotate Your Phone_04.png",
-  //         "timestamp": "2024-02-10T15:45:11.000Z",
-  //         "fullName": "Aryan Shinde",
-  //         "downloadUrl": "https://firebasestorage.googleapis.com/v0/b/blaze-plan-account.appspot.com/o/droppers%2Fuser_2ZUvu2vg0SIm90TEVg8jpjcF72M%2Ffiles%2Fn2LwdmP53l2XaiAKUYjQ?alt=media&token=6e370437-9aef-4d15-91e0-852b11640e08",
-  //         "type": "image/png",
-  //         "size": 15045
-  //     },
-  //     {
-  //         "id": "nnvjkcWlp76uuG260Udw",
-  //         "filename": "Products.txt",
-  //         "timestamp": "2024-02-07T15:22:39.000Z",
-  //         "fullName": "Aryan Shinde",
-  //         "downloadUrl": "https://firebasestorage.googleapis.com/v0/b/blaze-plan-account.appspot.com/o/droppers%2Fuser_2ZUvu2vg0SIm90TEVg8jpjcF72M%2Ffiles%2FnnvjkcWlp76uuG260Udw?alt=media&token=556982cd-ae3e-4235-b2f8-9e79105796ec",
-  //         "type": "text/plain",
-  //         "size": 3355
-  //     },
-  //     {
-  //         "id": "WmrRvLFCfM9QY0yVY2e5",
-  //         "filename": "Logo Dark.png",
-  //         "timestamp": "2024-02-06T19:31:37.000Z",
-  //         "fullName": "Aryan Shinde",
-  //         "downloadUrl": "https://firebasestorage.googleapis.com/v0/b/blaze-plan-account.appspot.com/o/droppers%2Fuser_2ZUvu2vg0SIm90TEVg8jpjcF72M%2Ffiles%2FWmrRvLFCfM9QY0yVY2e5?alt=media&token=14ecedc7-08b1-41ab-ae33-6bdd978b479a",
-  //         "type": "image/png",
-  //         "size": 170662
-  //     },
-  //     {
-  //         "id": "YcLGztOnpnAdrvBnJmRB",
-  //         "filename": "Logo Accent.png",
-  //         "timestamp": "2024-02-06T19:31:37.000Z",
-  //         "fullName": "Aryan Shinde",
-  //         "downloadUrl": "https://firebasestorage.googleapis.com/v0/b/blaze-plan-account.appspot.com/o/droppers%2Fuser_2ZUvu2vg0SIm90TEVg8jpjcF72M%2Ffiles%2FYcLGztOnpnAdrvBnJmRB?alt=media&token=2957cb6d-7f12-4fc0-95a6-0f3984f29ea2",
-  //         "type": "image/png",
-  //         "size": 172769
-  //     },
-  //     {
-  //         "id": "eTz38pAEDTQndFHGPksJ",
-  //         "filename": "Logo Accent BG.png",
-  //         "timestamp": "2024-02-06T19:31:37.000Z",
-  //         "fullName": "Aryan Shinde",
-  //         "downloadUrl": "https://firebasestorage.googleapis.com/v0/b/blaze-plan-account.appspot.com/o/droppers%2Fuser_2ZUvu2vg0SIm90TEVg8jpjcF72M%2Ffiles%2FeTz38pAEDTQndFHGPksJ?alt=media&token=615af2d8-1786-43c4-8fdc-0efab55556fb",
-  //         "type": "image/png",
-  //         "size": 103438
-  //     },
-  //     {
-  //         "id": "wemmhGlIDxmnYwIZmYTA",
-  //         "filename": "Logo White.png",
-  //         "timestamp": "2024-02-06T19:31:37.000Z",
-  //         "fullName": "Aryan Shinde",
-  //         "downloadUrl": "https://firebasestorage.googleapis.com/v0/b/blaze-plan-account.appspot.com/o/droppers%2Fuser_2ZUvu2vg0SIm90TEVg8jpjcF72M%2Ffiles%2FwemmhGlIDxmnYwIZmYTA?alt=media&token=64e59ac4-402f-43b4-b50b-ccd495bd5e52",
-  //         "type": "image/png",
-  //         "size": 171228
-  //     }
-  // ]
-
-  // I want to get the sum of the sizefrom the intialFiles array and display it in the UI.
-
   useEffect(() => {
     if (initialFiles.length === 0) return;
 
     const totalSize = initialFiles.reduce((acc, file) => acc + file.size, 0);
-    console.log(Math.ceil(totalSize / 1024));
-    // convert the bits into kilobit
+
     setTotalFileSize(Math.ceil(totalSize / 1024));
     setTotalSize(Math.ceil(totalSize / 1024));
   }, [initialFiles, setTotalSize]);
