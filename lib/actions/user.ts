@@ -42,13 +42,17 @@ export const deleteUser = async ({ userId }: { userId: string }) => {
     const q = query(collection(db, "users"), where("userId", "==", userId));
 
     const querySnapshot = await getDocs(q);
-    querySnapshot.forEach(async (doc) => {
+    querySnapshot.forEach(async (docs) => {
       // doc.data() is never undefined for query doc snapshots
-      console.log(doc.id, " => ", doc.data());
+      console.log(docs.id, " => ", docs.data());
 
       // delete the document
-      await deleteDoc(doc.ref);
+      // await deleteDoc(doc(db, "users", doc.id));
+      const deleteDocument = await deleteDoc(doc(db, "users", docs.id));
+      console.log("DELETEDOCUMENT", deleteDocument);
     });
+
+    await deleteDoc(doc(db, "droppers", userId));
 
     // const docRef = await deleteDoc(doc(db, "users", userId));
     return querySnapshot;
