@@ -9,7 +9,7 @@ export default function Home() {
         href="/dashboard"
         className="flex items-center justify-center bg-emerald-700 text-white dark:bg-emerald-600/40 p-3 px-6 rounded-full font-semibold"
       >
-        Lets GO <ArrowRight className="ml-4" />
+        Lets Go <ArrowRight className="ml-4" />
       </Link>
     </div>
   );
