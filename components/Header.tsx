@@ -33,7 +33,7 @@ const Header = () => {
         <SignedOut>
           {/* <SignInButton afterSignInUrl="/dashboard" mode="modal" /> */}
           <Button variant="outline" asChild>
-            <Link href="/signin">Sign In</Link>
+            <Link href="/sign-in">Sign In</Link>
           </Button>
         </SignedOut>
       </div>

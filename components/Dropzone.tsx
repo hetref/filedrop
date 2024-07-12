@@ -15,14 +15,13 @@ import { useEffect, useState } from "react";
 import DropzoneComponent from "react-dropzone";
 import { useToast } from "./ui/use-toast";
 import { useAppStore } from "@/store/store";
-import { Skeleton } from "./ui/skeleton";
 
 const Dropzone = () => {
   const [loading, setLoading] = useState(false);
-  const { isLoaded, isSignedIn, user } = useUser();
+  const { user } = useUser();
   const { toast } = useToast();
 
-  const totalSize = useAppStore((state) => state.totalSize);
+  // const totalSize = useAppStore((state) => state.totalSize);
   const maxSize = 20971520;
 
   const onDrop = (acceptedFiles: File[]) => {
@@ -90,14 +89,14 @@ const Dropzone = () => {
     setLoading(false);
   };
 
-  if (totalSize === -1) {
-    return (
-      // <div className="h-[200px] bg-primary/50 text-secondary flex justify-center items-center mx-4 my-4 rounded animate-pulse text-2xl md:text-3xl mb-4">
-      //   Loading
-      // </div>
-      <Skeleton className="h-[200px] flex justify-center items-center mx-4 my-4 rounded text-2xl md:text-3xl mb-4" />
-    );
-  }
+  // if (totalSize === -1) {
+  //   return (
+  //     // <div className="h-[200px] bg-primary/50 text-secondary flex justify-center items-center mx-4 my-4 rounded animate-pulse text-2xl md:text-3xl mb-4">
+  //     //   Loading
+  //     // </div>
+  //     <Skeleton className="h-[200px] flex justify-center items-center mx-4 my-4 rounded text-2xl md:text-3xl mb-4" />
+  //   );
+  // }
 
   return (
     <DropzoneComponent minSize={0} maxSize={maxSize} onDrop={onDrop}>
