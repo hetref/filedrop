@@ -1,5 +1,5 @@
 import { db } from "@/firebase";
-import { addDoc, collection } from "firebase/firestore";
+import { addDoc, collection, doc, setDoc } from "firebase/firestore";
 
 export const createUser = async ({
   email,
@@ -9,7 +9,7 @@ export const createUser = async ({
   userId: string;
 }) => {
   try {
-    const docRef = await addDoc(collection(db, "users", email), {
+    const docRef = await setDoc(doc(db, "users", email), {
       userId,
     });
     console.log("DOCREF", docRef);
