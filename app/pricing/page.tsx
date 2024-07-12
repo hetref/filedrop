@@ -2,10 +2,10 @@ import PricingCards from "@/components/PricingCards";
 
 const page = () => {
   return (
-    <div className="isolate overflow-hidden dark:bg-gray-900">
+    <div className="isolate overflow-hidden ">
       <div className="mx-auto max-w-7xl px-6 pb-96 pt-26 text-center sm:pt-32 lg:px-8">
         <div className="mx-auto max-w-4xl">
-          <h2 className="tet-base font-semibold leading-7 dark:text-indigo-400">
+          <h2 className="text-base font-semibold leading-7 dark:text-yellow-400">
             Pricing
           </h2>
           <p className="mt-2 text-4xl font-bold tracking-tight dark:text-white sm:text-5xl">

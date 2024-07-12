@@ -37,7 +37,14 @@ export const columns: ColumnDef<FileType>[] = [
     accessorKey: "size",
     header: "Size",
     cell: ({ renderValue, ...props }) => {
-      return <span>{prettyBytes(renderValue() as number)}</span>;
+      // return <span>{prettyBytes(renderValue() as number)}</span>;
+      return (
+        <span>
+          {Math.ceil(renderValue() as number) < 1024
+            ? `${Math.ceil(renderValue() as number)} KB`
+            : `${(Math.ceil(renderValue() as number) / 1024).toFixed(2)} MB`}
+        </span>
+      );
     },
   },
   {

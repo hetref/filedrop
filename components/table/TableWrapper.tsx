@@ -68,6 +68,7 @@ const TableWrapper = ({ skeletonFiles }: { skeletonFiles: FileType[] }) => {
     if (initialFiles.length === 0) return;
 
     const totalSize = initialFiles.reduce((acc, file) => acc + file.size, 0);
+    console.log("TOTAL SIZE", totalSize);
 
     setTotalFileSize(Math.ceil(totalSize / 1024));
     setTotalSize(Math.ceil(totalSize / 1024));
@@ -111,9 +112,9 @@ const TableWrapper = ({ skeletonFiles }: { skeletonFiles: FileType[] }) => {
         </p>
         <p>
           <b>Total Size</b>:{" "}
-          {totalFileSize < 1024
-            ? `${totalFileSize} KB`
-            : `${(totalFileSize / 1024).toFixed(2)} MB`}
+          {Math.ceil(totalFileSize) < 1024
+            ? `${Math.ceil(totalFileSize)} KB`
+            : `${Math.ceil(totalFileSize / 1024).toFixed(2)} MB`}
         </p>
       </div>
       <div className="flex ml-auto">

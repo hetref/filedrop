@@ -51,6 +51,8 @@ const Dropzone = () => {
     if (!user) return;
     setLoading(true);
 
+    console.log("FILE", selectedFile);
+
     try {
       // addDoc -> users/user1234/files
       const docRef = await addDoc(
