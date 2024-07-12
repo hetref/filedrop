@@ -64,9 +64,10 @@ export async function POST(req: Request) {
       email: email_addresses[0].email_address,
     };
 
-    const newUser = await createUser(user);
+    // const newUser = await createUser(user);
+    console.log("Created user:", user);
 
-    return NextResponse.json({ message: "OK", user: newUser });
+    return NextResponse.json({ message: "OK", user });
   }
 
   // UPDATE
