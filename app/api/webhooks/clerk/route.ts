@@ -3,7 +3,7 @@ import { headers } from "next/headers";
 import { NextResponse } from "next/server";
 import { Webhook } from "svix";
 
-// import { createUser } from "@/lib/actions/user";
+import { createUser } from "@/lib/actions/user";
 
 export async function POST(req: Request) {
   // You can find this in the Clerk Dashboard -> Webhooks -> choose the webhook
@@ -64,10 +64,10 @@ export async function POST(req: Request) {
       email: email_addresses[0].email_address,
     };
 
-    // const newUser = await createUser(user);
-    console.log("Created user:", user, id);
+    const newUser = await createUser(user);
+    // console.log("Created user:", user, id);
 
-    return NextResponse.json({ message: "OK", user });
+    return NextResponse.json({ message: "OK", user: newUser });
   }
 
   // UPDATE
