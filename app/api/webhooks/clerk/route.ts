@@ -65,7 +65,7 @@ export async function POST(req: Request) {
     };
 
     // const newUser = await createUser(user);
-    console.log("Created user:", user);
+    console.log("Created user:", user, id);
 
     return NextResponse.json({ message: "OK", user });
   }
