@@ -15,26 +15,26 @@ import { AlertTriangle } from "lucide-react";
 const page = () => {
   // TODO: Delete Dropper handling.
 
-  // const deleteDropper = async () => {
-  //   const { userId } = auth();
-  //   if (!userId) {
-  //     console.error("User ID is null");
-  //     return;
-  //   }
+  const deleteDropper = async () => {
+    const { userId } = auth();
+    if (!userId) {
+      console.error("User ID is null");
+      return;
+    }
 
-  //   const q = query(collection(db, "droppers"), where("userId", "==", userId));
+    const q = query(collection(db, "droppers"), where("userId", "==", userId));
 
-  //   const querySnapshot = await getDocs(q);
-  //   querySnapshot.forEach(async (docs) => {
-  //     console.log(docs.id, " => ", docs.data());
+    const querySnapshot = await getDocs(q);
+    querySnapshot.forEach(async (docs) => {
+      console.log(docs.id, " => ", docs.data());
 
-  //     // const deleteDocument = await deleteDoc(doc(db, "droppers", docs.id));
-  //     // console.log("DELETEDOCUMENT", deleteDocument);
-  //   });
+      // const deleteDocument = await deleteDoc(doc(db, "droppers", docs.id));
+      // console.log("DELETEDOCUMENT", deleteDocument);
+    });
 
-  //   await deleteDoc(doc(db, "droppers", userId));
-  //   return querySnapshot;
-  // };
+    await deleteDoc(doc(db, "droppers", userId));
+    return querySnapshot;
+  };
 
   return (
     <div className="isolate overflow-hidden ">
@@ -51,7 +51,7 @@ const page = () => {
             action={async () => {
               "use server";
               // const { userId } = auth();
-              await deleteUser({ userId: "user_2jBuetE1jD12J3fEowEs0cQlqoY" });
+              await deleteUser({ userId: "user_2jENuqQAm5tFFrtwlolkWoiNCnO" });
             }}
           >
             <button type="submit">Delete Dropper</button>
