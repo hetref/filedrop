@@ -12,7 +12,8 @@ import {
   query,
   where,
 } from "firebase/firestore";
-import { db } from "@/firebase";
+import { db, storage } from "@/firebase";
+import { deleteObject, listAll, ref } from "firebase/storage";
 
 export async function POST(req: Request) {
   // You can find this in the Clerk Dashboard -> Webhooks -> choose the webhook
@@ -112,14 +113,25 @@ export async function POST(req: Request) {
         .catch((error) => {
           console.error("Error deleting dropper:", error);
         });
-      // const q = query(collection(db, "users"), where("userId", "==", id));
-      // const querySnapshot = await getDocs(q);
 
-      // querySnapshot.forEach(async (docs) => {
-      //   console.log(docs.id, " => ", docs.data());
-      //   console.log("DOCID", docs.data().userId);
-      //   await deleteDoc(doc(db, "droppers", docs.));
-      // });
+      // Delete the user documents from storage -> /droppers/user_2j9nmrYq10zuZ7tepDXrrDwSkSB/files
+      const folderRef = ref(storage, `droppers/${id}/files`);
+
+      await listAll(folderRef)
+        .then((res) => {
+          res.items.forEach((itemRef) => {
+            deleteObject(itemRef)
+              .then(() => {
+                console.log("File deleted");
+              })
+              .catch((error) => {
+                console.log("Error deleting file:", error);
+              });
+          });
+        })
+        .catch((error) => {
+          console.error("Error listing files:", error);
+        });
     } catch (error) {
       console.error("Error deleting user:", error);
       return NextResponse.json(
