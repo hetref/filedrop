@@ -104,15 +104,23 @@ export async function POST(req: Request) {
       return NextResponse.json({ message: "User ID is null" }, { status: 400 });
     }
 
-    const q = query(collection(db, "users"), where("userId", "==", id));
-    const querySnapshot = await getDocs(q);
+    try {
+      const q = query(collection(db, "users"), where("userId", "==", id));
+      const querySnapshot = await getDocs(q);
 
-    querySnapshot.forEach(async (docs) => {
-      console.log(docs.id, " => ", docs.data());
-      console.log("DOCID", docs.data().userId);
-      await deleteDoc(doc(db, "droppers", docs.data().userId));
-      await deleteDoc(doc(db, "users", docs.id));
-    });
+      querySnapshot.forEach(async (docs) => {
+        console.log(docs.id, " => ", docs.data());
+        console.log("DOCID", docs.data().userId);
+        await deleteDoc(doc(db, "droppers", docs.data().userId));
+        await deleteDoc(doc(db, "users", docs.id));
+      });
+    } catch (error) {
+      console.error("Error deleting user:", error);
+      return NextResponse.json(
+        { message: "Error deleting user" },
+        { status: 500 }
+      );
+    }
 
     return NextResponse.json({ message: "OK", status: 200 });
   }
