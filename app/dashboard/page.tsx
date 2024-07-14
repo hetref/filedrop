@@ -4,10 +4,15 @@ import { db } from "@/firebase";
 import { FileType } from "@/typing";
 import { auth } from "@clerk/nextjs";
 import { collection, getDocs } from "firebase/firestore";
+import { redirect } from "next/navigation";
 import React from "react";
 
 const Dashboard = async () => {
   const { userId } = auth();
+
+  if (!userId) {
+    redirect("/");
+  }
 
   const docResults = await getDocs(
     collection(db, "droppers", userId!, "files")

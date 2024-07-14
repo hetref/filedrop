@@ -1,10 +1,7 @@
 import PricingCards from "@/components/PricingCards";
-import { deleteUser } from "@/lib/actions/user";
 import { AlertTriangle } from "lucide-react";
 
 const page = () => {
-  // TODO: Delete Dropper handling.
-
   // const deleteDropper = async ({ userId }: { userId: string }) => {
   //   // const { userId } = auth();
   //   if (!userId) {
@@ -37,7 +34,7 @@ const page = () => {
           <h2 className="text-xl font-semibold leading-7 dark:text-yellow-400">
             Pricing
           </h2>
-          <form
+          {/* <form
             action={async () => {
               "use server";
               // const { userId } = auth();
@@ -45,7 +42,7 @@ const page = () => {
             }}
           >
             <button type="submit">Delete Dropper</button>
-          </form>
+          </form> */}
           <p className="mt-2 text-4xl font-bold tracking-tight dark:text-white sm:text-5xl">
             The right price for you,{" "}
             <br className="hidden sm:inline lg:hidden" />
