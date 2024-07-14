@@ -49,9 +49,9 @@ export const deleteUser = async ({ userId }: { userId: string }) => {
     await listAll(folderRef)
       .then((res) => {
         console.log("RES", res);
-        res.items.forEach((itemRef) => {
+        res.items.forEach(async (itemRef) => {
           console.log("ITEMREF", itemRef);
-          deleteObject(itemRef)
+          await deleteObject(itemRef)
             .then(() => {
               console.log("File deleted");
             })
