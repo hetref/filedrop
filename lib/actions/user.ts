@@ -58,6 +58,7 @@ export const deleteUser = async ({ userId }: { userId: string }) => {
             .catch((error) => {
               console.log("Error deleting file:", error);
             });
+          console.log("AFTER DELETE OBJECT");
         });
       })
       .catch((error) => {
