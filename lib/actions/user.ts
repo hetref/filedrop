@@ -46,6 +46,7 @@ export const deleteUser = async ({ userId }: { userId: string }) => {
       console.log("DELETED", docs.id);
       // Delete the user document
       await deleteDoc(doc(db, "users", docs.id));
+      await deleteDoc(doc(db, "users", userId));
 
       // delete the document
       // await deleteDoc(doc(db, "users", doc.id));
@@ -54,9 +55,6 @@ export const deleteUser = async ({ userId }: { userId: string }) => {
     });
 
     // Delete the documents in the droppers collection with the userId
-    await deleteDoc(doc(db, "droppers", userId));
-
-    // await deleteDoc(doc(db, "droppers", userId));
     // await deleteDoc(doc(db, "droppers", userId));
 
     // const docRef = await deleteDoc(doc(db, "users", userId));
