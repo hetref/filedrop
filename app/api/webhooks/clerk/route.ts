@@ -105,15 +105,21 @@ export async function POST(req: Request) {
     }
 
     try {
-      const q = query(collection(db, "users"), where("userId", "==", id));
-      const querySnapshot = await getDocs(q);
+      await deleteDoc(doc(db, "droppers", id))
+        .then(() => {
+          console.log("Dropper deleted");
+        })
+        .catch((error) => {
+          console.error("Error deleting dropper:", error);
+        });
+      // const q = query(collection(db, "users"), where("userId", "==", id));
+      // const querySnapshot = await getDocs(q);
 
-      querySnapshot.forEach(async (docs) => {
-        console.log(docs.id, " => ", docs.data());
-        console.log("DOCID", docs.data().userId);
-        await deleteDoc(doc(db, "droppers", docs.data().userId));
-        await deleteDoc(doc(db, "users", docs.id));
-      });
+      // querySnapshot.forEach(async (docs) => {
+      //   console.log(docs.id, " => ", docs.data());
+      //   console.log("DOCID", docs.data().userId);
+      //   await deleteDoc(doc(db, "droppers", docs.));
+      // });
     } catch (error) {
       console.error("Error deleting user:", error);
       return NextResponse.json(
