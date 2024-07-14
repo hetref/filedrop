@@ -1,10 +1,8 @@
 import { db } from "@/firebase";
 import {
-  addDoc,
   collection,
   deleteDoc,
   doc,
-  getDoc,
   getDocs,
   query,
   setDoc,
@@ -45,8 +43,8 @@ export const deleteUser = async ({ userId }: { userId: string }) => {
       console.log(docs.id, " => ", docs.data());
       console.log("DELETED", docs.id);
       // Delete the user document
+      await deleteDoc(doc(db, "droppers", docs.data().userId));
       await deleteDoc(doc(db, "users", docs.id));
-      await deleteDoc(doc(db, "users", userId));
 
       // delete the document
       // await deleteDoc(doc(db, "users", doc.id));
