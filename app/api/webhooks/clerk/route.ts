@@ -4,6 +4,15 @@ import { NextResponse } from "next/server";
 import { Webhook } from "svix";
 
 import { createUser, deleteUser } from "@/lib/actions/user";
+import {
+  collection,
+  deleteDoc,
+  doc,
+  getDocs,
+  query,
+  where,
+} from "firebase/firestore";
+import { db } from "@/firebase";
 
 export async function POST(req: Request) {
   // You can find this in the Clerk Dashboard -> Webhooks -> choose the webhook
@@ -90,12 +99,22 @@ export async function POST(req: Request) {
   // DELETE
   if (eventType === "user.deleted") {
     const { id } = evt.data;
-    const userId = id || "";
+    if (!id) {
+      console.error("User ID is null");
+      return NextResponse.json({ message: "User ID is null" }, { status: 400 });
+    }
 
-    const deletedUser = await deleteUser({ userId });
-    console.log("DELETED", id);
+    const q = query(collection(db, "users"), where("userId", "==", id));
+    const querySnapshot = await getDocs(q);
 
-    return NextResponse.json({ message: "OK", user: deletedUser });
+    querySnapshot.forEach(async (docs) => {
+      console.log(docs.id, " => ", docs.data());
+      console.log("DOCID", docs.data().userId);
+      await deleteDoc(doc(db, "droppers", docs.data().userId));
+      await deleteDoc(doc(db, "users", docs.id));
+    });
+
+    return NextResponse.json({ message: "OK", status: 200 });
   }
 
   console.log(`Webhook with and ID of ${id} and type of ${eventType}`);
