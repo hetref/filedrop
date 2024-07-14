@@ -48,11 +48,12 @@ export const deleteUser = async ({ userId }: { userId: string }) => {
 
       // delete the document
       // await deleteDoc(doc(db, "users", doc.id));
-      const deleteDocument = await deleteDoc(doc(db, "users", docs.id));
-      console.log("DELETEDOCUMENT", deleteDocument);
+      // const deleteDocument = await deleteDoc(doc(db, "users", docs.id));
+      // console.log("DELETEDOCUMENT", deleteDocument);
     });
 
-    await deleteDoc(doc(db, "droppers", userId));
+    // await deleteDoc(doc(db, "droppers", userId));
+    // await deleteDoc(doc(db, "droppers", userId));
 
     // const docRef = await deleteDoc(doc(db, "users", userId));
     return querySnapshot;

@@ -1,13 +1,61 @@
 import PricingCards from "@/components/PricingCards";
+import { db } from "@/firebase";
+import { deleteUser } from "@/lib/actions/user";
+import { auth } from "@clerk/nextjs";
+import {
+  collection,
+  deleteDoc,
+  doc,
+  getDocs,
+  query,
+  where,
+} from "firebase/firestore";
+import { AlertTriangle } from "lucide-react";
 
 const page = () => {
+  // TODO: Delete Dropper handling.
+
+  // const deleteDropper = async () => {
+  //   const { userId } = auth();
+  //   if (!userId) {
+  //     console.error("User ID is null");
+  //     return;
+  //   }
+
+  //   const q = query(collection(db, "droppers"), where("userId", "==", userId));
+
+  //   const querySnapshot = await getDocs(q);
+  //   querySnapshot.forEach(async (docs) => {
+  //     console.log(docs.id, " => ", docs.data());
+
+  //     // const deleteDocument = await deleteDoc(doc(db, "droppers", docs.id));
+  //     // console.log("DELETEDOCUMENT", deleteDocument);
+  //   });
+
+  //   await deleteDoc(doc(db, "droppers", userId));
+  //   return querySnapshot;
+  // };
+
   return (
     <div className="isolate overflow-hidden ">
       <div className="mx-auto max-w-7xl px-6 pb-96 pt-26 text-center sm:pt-32 lg:px-8">
         <div className="mx-auto max-w-4xl">
-          <h2 className="text-base font-semibold leading-7 dark:text-yellow-400">
+          <h3 className="bg-white flex justify-center items-center gap-4 rounded-full text-black p-4 mb-12">
+            <AlertTriangle className="text-red-900" /> We are currently in
+            developing stage! We will notify you once we are on production.
+          </h3>
+          <h2 className="text-xl font-semibold leading-7 dark:text-yellow-400">
             Pricing
           </h2>
+          {/* <form
+            action={async () => {
+              "use server";
+              // const { userId } = auth();
+              await deleteUser({ userId: "user_2jBuetE1jD12J3fEowEs0cQlqoY" });
+            }}
+          >
+            <button type="submit">Delete Dropper</button>
+          </form> */}
           <p className="mt-2 text-4xl font-bold tracking-tight dark:text-white sm:text-5xl">
             The right price for you,{" "}
             <br className="hidden sm:inline lg:hidden" />
