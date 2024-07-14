@@ -112,33 +112,11 @@ export async function POST(req: Request) {
         })
         .catch((error) => {
           console.error("Error deleting user:", error);
+          return NextResponse.json(
+            { message: "Error deleting user" },
+            { status: 500 }
+          );
         });
-      // await deleteDoc(doc(db, "droppers", id))
-      //   .then(() => {
-      //     console.log("Dropper deleted");
-      //   })
-      //   .catch((error) => {
-      //     console.error("Error deleting dropper:", error);
-      //   });
-
-      // // Delete the user documents from storage -> /droppers/user_2j9nmrYq10zuZ7tepDXrrDwSkSB/files
-      // const folderRef = ref(storage, `droppers/${id}/files`);
-
-      // await listAll(folderRef)
-      //   .then((res) => {
-      //     res.items.forEach((itemRef) => {
-      //       deleteObject(itemRef)
-      //         .then(() => {
-      //           console.log("File deleted");
-      //         })
-      //         .catch((error) => {
-      //           console.log("Error deleting file:", error);
-      //         });
-      //     });
-      //   })
-      //   .catch((error) => {
-      //     console.error("Error listing files:", error);
-      //   });
     } catch (error) {
       console.error("Error deleting user:", error);
       return NextResponse.json(
