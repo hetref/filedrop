@@ -17,8 +17,9 @@ export const createUser = async ({
   userId: string;
 }) => {
   try {
-    const docRef = await setDoc(doc(db, "users", email), {
+    const docRef = await setDoc(doc(db, "droppers", userId), {
       userId,
+      email,
     });
     console.log("DOCREF", docRef);
     return docRef;
