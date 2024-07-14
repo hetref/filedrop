@@ -32,12 +32,14 @@ export const createUser = async ({
 export const deleteUser = async ({ userId }: { userId: string }) => {
   try {
     if (!userId) {
+      console.log("RETURNING FROM DELETE FUNCTION");
       return;
     }
     // Query the collection users where the userId is equal to the userId passed in and delete the document with that userId, all the documents are named with the user's email id, and the document has userId in it
     // I cannot directly get the document using the userId, I need to query the collection and get the document with the userId and then delete the email (document) of the user to be deleted
     const q = query(collection(db, "users"), where("userId", "==", userId));
     const querySnapshot = await getDocs(q);
+    console.log("QUERY SNAPSHOT", querySnapshot);
     querySnapshot.forEach(async (docs) => {
       // doc.data() is never undefined for query doc snapshots
       console.log(docs.id, " => ", docs.data());
