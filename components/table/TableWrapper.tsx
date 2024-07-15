@@ -6,9 +6,9 @@ import { DataTable } from "./Table";
 import { columns } from "./columns";
 import { useUser } from "@clerk/nextjs";
 import { useEffect, useState } from "react";
-import { collection, orderBy, query } from "firebase/firestore";
+import { collection, getDoc, orderBy, query, doc } from "firebase/firestore";
 import { db } from "@/firebase";
-import { useCollection } from "react-firebase-hooks/firestore";
+import { useCollection, useDocument } from "react-firebase-hooks/firestore";
 import { Skeleton } from "@/components/ui/skeleton";
 import { useAppStore } from "@/store/store";
 import { BulkDelete } from "../BulkDelete";
@@ -17,6 +17,7 @@ const TableWrapper = ({ skeletonFiles }: { skeletonFiles: FileType[] }) => {
   const { user } = useUser();
   const [initialFiles, setInitialFiles] = useState<FileType[]>([]);
   const [sort, setSort] = useState<"asc" | "desc">("desc");
+  const [totalFileSize, setTotalFileSize] = useState<number>(0);
 
   const [docs, loading, error] = useCollection(
     user &&
@@ -26,9 +27,9 @@ const TableWrapper = ({ skeletonFiles }: { skeletonFiles: FileType[] }) => {
       )
   );
 
-  const setTotalSize = useAppStore((state) => state.setTotalSize);
+  const [userDoc] = useDocument(user && doc(db, "droppers", user.id));
 
-  const [totalFileSize, setTotalFileSize] = useState<number>(0);
+  console.log("USERDOC", userDoc?.data());
 
   const [selectedValues, isDeleting, setIsBulkDeletingOpen] = useAppStore(
     (state) => [
@@ -51,8 +52,10 @@ const TableWrapper = ({ skeletonFiles }: { skeletonFiles: FileType[] }) => {
       size: doc.data().size,
     }));
 
+    setTotalFileSize(Math.max(Math.ceil(userDoc?.data()?.size ?? 0 / 1024), 0));
+
     setInitialFiles(files);
-  }, [docs, selectedValues]);
+  }, [docs, selectedValues, userDoc]);
 
   const isDisabled = () => {
     if (isDeleting) {
@@ -63,16 +66,6 @@ const TableWrapper = ({ skeletonFiles }: { skeletonFiles: FileType[] }) => {
       return false;
     }
   };
-
-  useEffect(() => {
-    if (initialFiles.length === 0) return;
-
-    const totalSize = initialFiles.reduce((acc, file) => acc + file.size, 0);
-    console.log("TOTAL SIZE", totalSize);
-
-    setTotalFileSize(Math.ceil(totalSize / 1024));
-    setTotalSize(Math.ceil(totalSize / 1024));
-  }, [initialFiles, setTotalSize]);
 
   if (docs?.docs.length === undefined) {
     return (
@@ -112,9 +105,13 @@ const TableWrapper = ({ skeletonFiles }: { skeletonFiles: FileType[] }) => {
         </p>
         <p>
           <b>Total Size</b>:{" "}
-          {Math.ceil(totalFileSize) < 1024
-            ? `${Math.ceil(totalFileSize)} KB`
-            : `${Math.ceil(totalFileSize / 1024).toFixed(2)} MB`}
+          {totalFileSize < 1024
+            ? `${totalFileSize} B`
+            : totalFileSize < 1024 * 1024
+            ? `${(totalFileSize / 1024).toFixed(2)} KB`
+            : totalFileSize < 1024 * 1024 * 1024
+            ? `${(totalFileSize / (1024 * 1024)).toFixed(2)} MB`
+            : `${(totalFileSize / (1024 * 1024 * 1024)).toFixed(2)} GB`}
         </p>
       </div>
       <div className="flex ml-auto">

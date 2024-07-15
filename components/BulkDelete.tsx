@@ -12,7 +12,7 @@ import { useAppStore } from "@/store/store";
 import { useUser } from "@clerk/nextjs";
 import { deleteObject, ref } from "firebase/storage";
 import { db, storage } from "@/firebase";
-import { deleteDoc, doc } from "firebase/firestore";
+import { deleteDoc, doc, getDoc, runTransaction } from "firebase/firestore";
 import { useToast } from "./ui/use-toast";
 export function BulkDelete() {
   const { user } = useUser();
@@ -41,28 +41,53 @@ export function BulkDelete() {
     setIsDeleting(true);
     setIsBulkDeletingOpen(false);
 
-    selectedValues.map((fileId) => {
-      const fileRef = ref(storage, `droppers/${user.id}/files/${fileId}`);
+    try {
+      let totalSizeReduction = 0;
 
-      try {
-        deleteObject(fileRef).then(async () => {
-          deleteDoc(doc(db, "droppers", user.id, "files", fileId)).then(() => {
-            toast({
-              description: "Files Deleted Successfully!",
-            });
-          });
-        });
-      } catch (error) {
-        console.log(error);
+      for (const fileId of selectedValues) {
+        const fileRef = ref(storage, `droppers/${user.id}/files/${fileId}`);
 
-        toast({
-          variant: "destructive",
-          description: "Error occured while deleting the file!",
-        });
+        // Delete the file from storage
+        await deleteObject(fileRef);
+
+        // Get the file document
+        const docing = await getDoc(
+          doc(db, "droppers", user.id, "files", fileId)
+        );
+        if (docing.exists()) {
+          const { size: docingSize } = docing.data();
+          totalSizeReduction += docingSize;
+
+          // Delete the file document from the database
+          await deleteDoc(doc(db, "droppers", user.id, "files", fileId));
+        }
       }
-    });
 
-    setSelectedValues([]);
+      // Run transaction to update total file size
+      await runTransaction(db, async (transaction) => {
+        const sfDoc = await transaction.get(doc(db, "droppers", user.id));
+        if (!sfDoc.exists()) {
+          throw "Document does not exist!";
+        }
+
+        const newSize = sfDoc.data().size - totalSizeReduction;
+        transaction.update(doc(db, "droppers", user.id), { size: newSize });
+      });
+
+      toast({
+        description: "Files Deleted Successfully!",
+      });
+    } catch (error) {
+      console.error(error);
+
+      toast({
+        variant: "destructive",
+        description: "Error occurred while deleting the files!",
+      });
+    } finally {
+      setIsDeleting(false);
+      setSelectedValues([]);
+    }
   };
 
   return (

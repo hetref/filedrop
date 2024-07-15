@@ -3,7 +3,6 @@
 import { COLOR_EXTENSION_MAP } from "@/constants";
 import { FileType } from "@/typing";
 import { ColumnDef } from "@tanstack/react-table";
-import prettyBytes from "pretty-bytes";
 import { FileIcon, defaultStyles } from "react-file-icon";
 
 export const columns: ColumnDef<FileType>[] = [
@@ -40,9 +39,21 @@ export const columns: ColumnDef<FileType>[] = [
       // return <span>{prettyBytes(renderValue() as number)}</span>;
       return (
         <span>
-          {Math.ceil(renderValue() as number) < 1024
+          {/* {Math.ceil(renderValue() as number) < 1024
             ? `${Math.ceil(renderValue() as number)} KB`
-            : `${(Math.ceil(renderValue() as number) / 1024).toFixed(2)} MB`}
+            : `${(Math.ceil(renderValue() as number) / 1024).toFixed(2)} MB`} */}
+          {Math.ceil(renderValue() as number) < 1024
+            ? `${Math.ceil(renderValue() as number)} B`
+            : Math.ceil(renderValue() as number) < 1024 * 1024
+            ? `${(Math.ceil(renderValue() as number) / 1024).toFixed(2)} KB`
+            : Math.ceil(renderValue() as number) < 1024 * 1024 * 1024
+            ? `${(Math.ceil(renderValue() as number) / (1024 * 1024)).toFixed(
+                2
+              )} MB`
+            : `${(
+                Math.ceil(renderValue() as number) /
+                (1024 * 1024 * 1024)
+              ).toFixed(2)} GB`}
         </span>
       );
     },

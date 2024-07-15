@@ -21,9 +21,6 @@ interface AppState {
 
   selectedValues: string[];
   setSelectedValues: (selectedValues: string[]) => void;
-
-  totalSize: number;
-  setTotalSize: (size: number) => void;
 }
 
 export const useAppStore = create<AppState>()((set) => ({
@@ -49,7 +46,4 @@ export const useAppStore = create<AppState>()((set) => ({
   selectedValues: [],
   setSelectedValues: (values: string[]) =>
     set((state) => ({ selectedValues: values })),
-
-  totalSize: -1,
-  setTotalSize: (size: number) => set((state) => ({ totalSize: size })),
 }));
