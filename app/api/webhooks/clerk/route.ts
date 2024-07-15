@@ -64,7 +64,15 @@ export async function POST(req: Request) {
       email: email_addresses[0].email_address,
     };
 
-    const newUser = await createUser(user);
+    const newUser = await createUser(user)
+      .then((res) => {
+        console.log("Created user:", res);
+        return res;
+      })
+      .catch((error) => {
+        console.error("Error creating user:", error);
+        throw new Error("Error creating user");
+      });
     // console.log("Created user:", user, id);
 
     return NextResponse.json({ message: "OK", user: newUser });
@@ -92,7 +100,8 @@ export async function POST(req: Request) {
     const { id } = evt.data;
     if (!id) {
       console.error("User ID is null");
-      return NextResponse.json({ message: "User ID is null" }, { status: 400 });
+      throw new Error("User ID is null");
+      // return NextResponse.json({ message: "User ID is null" }, { status: 400 });
     }
 
     try {
@@ -102,17 +111,19 @@ export async function POST(req: Request) {
         })
         .catch((error) => {
           console.error("Error deleting user:", error);
-          return NextResponse.json(
-            { message: "Error deleting user" },
-            { status: 500 }
-          );
+          throw new Error("Error deleting user");
+          // return NextResponse.json(
+          //   { message: "Error deleting user" },
+          //   { status: 500 }
+          // );
         });
     } catch (error) {
       console.error("Error deleting user:", error);
-      return NextResponse.json(
-        { message: "Error deleting user" },
-        { status: 500 }
-      );
+      throw new Error("Error deleting user");
+      // return NextResponse.json(
+      //   { message: "Error deleting user" },
+      //   { status: 500 }
+      // );
     }
 
     return NextResponse.json({ message: "OK", status: 200 });

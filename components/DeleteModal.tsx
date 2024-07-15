@@ -78,67 +78,12 @@ export function DeleteModal() {
         variant: "destructive",
         description: "Error occurred while deleting the file!",
       });
+
+      throw new Error("Error occurred while deleting the file!");
     } finally {
       setIsDeleteModalOpen(false);
     }
   };
-
-  // const deleteFile = async () => {
-  //   if (!user || !fileId) return;
-
-  //   const fileRef = ref(storage, `droppers/${user.id}/files/${fileId}`);
-
-  //   try {
-  //     await deleteObject(fileRef)
-  //       .then(async () => {
-  //         // TODO: Delete the file from the database & reduce the size of the totalFileSize
-  //         const docing = await getDoc(
-  //           doc(db, "droppers", user.id, "files", fileId)
-  //         );
-
-  //         if (!docing.exists()) {
-  //           toast({
-  //             variant: "destructive",
-  //             description: "File not found!",
-  //           });
-  //           return;
-  //         }
-
-  //         const { size: docingSize } = docing.data();
-
-  //         await runTransaction(db, async (transaction) => {
-  //           const sfDoc = await transaction.get(doc(db, "droppers", user.id));
-  //           if (!sfDoc.exists()) {
-  //             throw "Document does not exist!";
-  //           }
-
-  //           const newSize = sfDoc.data().size - docingSize;
-  //           transaction.update(doc(db, "droppers", user.id), {
-  //             size: newSize,
-  //           });
-  //         });
-
-  //         await deleteDoc(doc(db, "droppers", user.id, "files", fileId)).then(
-  //           () => {
-  //             toast({
-  //               description: "File Deleted Successfully!",
-  //             });
-  //           }
-  //         );
-  //       })
-  //       .finally(() => {
-  //         setIsDeleteModalOpen(false);
-  //       });
-  //   } catch (error) {
-  //     console.log(error);
-  //     setIsDeleteModalOpen(false);
-
-  //     toast({
-  //       variant: "destructive",
-  //       description: "Error occured while deleting the file!",
-  //     });
-  //   }
-  // };
 
   return (
     <Dialog

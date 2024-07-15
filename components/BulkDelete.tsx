@@ -84,6 +84,7 @@ export function BulkDelete() {
         variant: "destructive",
         description: "Error occurred while deleting the files!",
       });
+      throw new Error("Error occurred while deleting the files!");
     } finally {
       setIsDeleting(false);
       setSelectedValues([]);

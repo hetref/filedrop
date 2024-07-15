@@ -27,6 +27,11 @@ const TableWrapper = ({ skeletonFiles }: { skeletonFiles: FileType[] }) => {
       )
   );
 
+  if (error && !loading) {
+    console.error(error);
+    throw new Error("Error fetching files");
+  }
+
   const [userDoc] = useDocument(user && doc(db, "droppers", user.id));
 
   console.log("USERDOC", userDoc?.data());
@@ -40,7 +45,10 @@ const TableWrapper = ({ skeletonFiles }: { skeletonFiles: FileType[] }) => {
   );
 
   useEffect(() => {
-    if (!docs) return;
+    if (!docs) {
+      throw new Error("No docs found");
+      return;
+    }
 
     const files: FileType[] = docs.docs.map((doc) => ({
       id: doc.id,

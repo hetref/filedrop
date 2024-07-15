@@ -6,7 +6,6 @@ import {
   getDocs,
   query,
   setDoc,
-  where,
 } from "firebase/firestore";
 import { deleteObject, listAll, ref } from "firebase/storage";
 
@@ -26,6 +25,7 @@ export const createUser = async ({
     return docRef;
   } catch (error) {
     console.error(error);
+    throw new Error("Error creating user");
   }
 };
 
@@ -33,7 +33,7 @@ export const deleteUser = async ({ userId }: { userId: string }) => {
   try {
     if (!userId) {
       console.log("RETURNING FROM DELETE FUNCTION");
-      return;
+      throw new Error("User ID is null");
     }
 
     // Reference to the user's files subcollection
@@ -78,35 +78,6 @@ export const deleteUser = async ({ userId }: { userId: string }) => {
     // Wait for all storage file deletions to complete
     await Promise.all(deleteStoragePromises);
     console.log("All files deleted from storage");
-
-    // await deleteDoc(doc(db, "droppers", userId))
-    //   .then(() => {
-    //     console.log("Dropper deleted");
-    //   })
-    //   .catch((error) => {
-    //     console.error("Error deleting dropper:", error);
-    //   });
-
-    // const folderRef = ref(storage, `droppers/${userId}/files`);
-
-    // await listAll(folderRef)
-    //   .then((res) => {
-    //     console.log("RES", res);
-    //     res.items.forEach(async (itemRef) => {
-    //       console.log("ITEMREF", itemRef);
-    //       await deleteObject(itemRef)
-    //         .then(() => {
-    //           console.log("File deleted");
-    //         })
-    //         .catch((error) => {
-    //           console.log("Error deleting file:", error);
-    //         });
-    //       console.log("AFTER DELETE OBJECT");
-    //     });
-    //   })
-    //   .catch((error) => {
-    //     console.error("Error listing files:", error);
-    //   });
   } catch (error) {
     console.error(error);
   }

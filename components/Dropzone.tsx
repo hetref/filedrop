@@ -34,13 +34,16 @@ const Dropzone = () => {
           title: "File Uploading Error!",
           description: "File reading was aborted.",
         });
+        throw new Error("File reading was aborted.");
       };
-      reader.onerror = () =>
+      reader.onerror = () => {
         toast({
           variant: "destructive",
           title: "File Uploading Error!",
           description: "File reading has failed.",
         });
+        throw new Error("File reading has failed.");
+      };
       reader.onload = async () => await uploadPost(file);
       reader.readAsArrayBuffer(file);
     });
@@ -58,7 +61,7 @@ const Dropzone = () => {
       await runTransaction(db, async (transaction) => {
         const dropperDoc = await transaction.get(doc(db, "droppers", user.id));
         if (!dropperDoc.exists()) {
-          throw "Document does not exist!";
+          throw new Error("Document does not exist!");
         }
 
         const newSize = (dropperDoc.data()?.size || 0) + selectedFile.size;
@@ -87,6 +90,7 @@ const Dropzone = () => {
             title: "Cannot upload the document!",
           });
           setLoading(false);
+          throw new Error("Transaction to update size on upload has failed!");
           return;
         });
 
@@ -127,6 +131,8 @@ const Dropzone = () => {
         variant: "destructive",
         description: "Something went wrong!",
       });
+
+      throw new Error("Error uploading the file!");
     }
 
     setLoading(false);

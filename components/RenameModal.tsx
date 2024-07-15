@@ -48,6 +48,7 @@ const RenameModal = () => {
           variant: "destructive",
           description: "Error occured while renaming the file!",
         });
+        throw new Error("Error occured while renaming the file!");
       });
 
     setInput("");
